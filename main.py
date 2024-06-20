@@ -12,22 +12,29 @@ def isCritical():
         return 2
     else:
         return 1
-    
-def levelValue(level):
+
+
+def levelValue(level: int) -> int:
     """
     Returns the operation value based on the given level.
     The level value is calculated by multiplying the level by 2 and by the critical value,
     after divide by 2 and sum 2.
     """
+    level = 1 if level < 1 else level
     critical_value = isCritical()
-    return (level * 2 * critical_value) // 2 + 2
+    return int((level * 2 * critical_value) // 2 + 2)
 
-def powerAD(power, attack, defense):
+
+def powerAD(power: int, attack: int, defense: int) -> int:
     """
     Returns the damage done by the attacker based on the given power, attack, and defense.
     The damage is calculated by multiplying the power by the divison of attack value by the defense value.
     """
+    for value in (power, attack, defense):
+        if value <= 0:
+            value = 1
+
     attack_value = attack
     defense_value = defense
     power_value = power
-    return power_value * (attack_value / defense_value)
+    return int(power_value * (attack_value / defense_value))
