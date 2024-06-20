@@ -171,13 +171,8 @@ for i in range(100):
     log.append(x)
 
 print(f"Average damage: {sum(log) / len(log)}")
-
 print(f"Minimum damage: {min(log)}")
-
 print(f"Maximum damage: {max(log)}")
-
 couting = Counter(log)
-
 print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
-
 print(f"Least commun amout of damage: {couting.most_common()[-1]}")
