@@ -21,3 +21,13 @@ def levelValue(level):
     """
     critical_value = isCritical()
     return (level * 2 * critical_value) // 2 + 2
+
+def powerAD(power, attack, defense):
+    """
+    Returns the damage done by the attacker based on the given power, attack, and defense.
+    The damage is calculated by multiplying the power by the divison of attack value by the defense value.
+    """
+    attack_value = attack
+    defense_value = defense
+    power_value = power
+    return power_value * (attack_value / defense_value)
