@@ -37,7 +37,7 @@ def powerAD(power: int, attack: int, defense: int) -> int:
     if attack > 255 or defense > 255:
         attack_value = 255 / 4
         defense_value = 255 / 4
-        
+
     attack_value = attack
     defense_value = defense
     power_value = power
@@ -53,3 +53,39 @@ def calculateParentheses(level: int, power: int, attack: int, defense: int) -> i
     level_value = levelValue(level)
     damage = powerAD(power, attack, defense)
     return int((level_value * damage) / 50 + 2)
+
+def isSTAB(attackType: str, pokemonType: str):
+    """
+    Returns 1.5 if the attack type is STAB (Strong Type Attack Bonus),
+    and 1 otherwise.
+    """
+    return 1.5 if attackType == pokemonType else 1
+
+def calculateAdvantage(attackType: str, pokemonType1: str, pokemonType2: str = None) -> float:
+    """
+    Returns the advantage factor based on the given attack type,
+    and the types of the foe Pokémon.
+    The advantage factor is calculated by multiplying the value of the first advantages
+    for the second one of the foe Pokémon.
+    """
+    type_advantages = {
+        "fire": ["grass", "bug", "ice"],
+        "water": ["fire", "ground", "rock"],
+        "grass": ["water", "ground", "rock"]
+    }
+
+    # Verifica se pokemonType2 foi fornecido
+    if pokemonType2 is None:
+        if pokemonType1 in type_advantages.get(attackType, []):
+            return 2
+        else:
+            return 1
+    else:
+        if pokemonType1 in type_advantages.get(attackType, []) and pokemonType2 in type_advantages.get(attackType, []):
+            return 4
+        elif pokemonType1 in type_advantages.get(attackType, []):
+            return 2
+        elif pokemonType2 in type_advantages.get(attackType, []):
+            return 2
+        else:
+            return 1
