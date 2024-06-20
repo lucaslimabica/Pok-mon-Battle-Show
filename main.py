@@ -11,6 +11,7 @@ def isCritical():
     chance = random.randint(1, 100) <= 5
     return 2 if chance else 1
 
+
 def levelValue(level: int) -> int:
     """
     Returns the operation value based on the given level.
@@ -31,7 +32,7 @@ def powerAD(power: int, attack: int, defense: int) -> int:
     attack = max(1, attack)
     defense = max(1, defense)
     power = max(1, power)
-    
+
     if attack > 255 or defense > 255:
         attack = attack / 4
         defense = defense / 4
@@ -49,6 +50,7 @@ def calculateParentheses(level: int, power: int, attack: int, defense: int) -> i
     damage = powerAD(power, attack, defense)
     return int((level_value * damage) / 50 + 2)
 
+
 def isSTAB(attackType: str, pokemonType: str):
     """
     Returns 1.5 if the attack type is STAB (Strong Type Attack Bonus),
@@ -56,13 +58,14 @@ def isSTAB(attackType: str, pokemonType: str):
     """
     return 1.5 if attackType == pokemonType else 1
 
+
 def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> float:
     """
     Returns the advantage factor based on the given attack type,
     and the types of the foe Pokémon.
     The advantage factor is calculated by multiplying the value of the first advantages
     for the second one of the foe Pokémon.
-    
+
     Parameters:
     attackType (str): The type of the attack.
     foeType1 (str): The primary type of the foe Pokémon.
@@ -99,7 +102,7 @@ def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> 
         "ground": ["fire", "electric", "poison", "rock", "steel"],
         "flying": ["grass", "fighting", "bug"],
         "rock": ["fire", "ice", "flying", "bug"],
-        "normal": []
+        "normal": [],
     }
 
     if foeType2 is None:
@@ -111,13 +114,22 @@ def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> 
         if foeType2 in type_advantages.get(attackType, []):
             multiplier *= 2
         return multiplier
-    
 
-def calculateDamage(level: int, power: int, attack: int, defense: int, attackType: str, pokemonType: str, foeType1: str, foeType2: str = None):
+
+def calculateDamage(
+    level: int,
+    power: int,
+    attack: int,
+    defense: int,
+    attackType: str,
+    pokemonType: str,
+    foeType1: str,
+    foeType2: str = None,
+):
     """
     Returns the damage done by the attacker based on the given level, power, attack, defense,
     attack type, and types of the foe Pokémon.
-    
+
     Parameters:
     level (int): The level of the attacker Pokémon.
     power (int): The power of the attack.
@@ -130,7 +142,10 @@ def calculateDamage(level: int, power: int, attack: int, defense: int, attackTyp
     parentheses_damage = calculateParentheses(level, power, attack, defense)
     advantage_factor = calculateAdvantage(attackType, foeType1, foeType2)
     stab_factor = isSTAB(attackType, pokemonType)
-    return int(parentheses_damage * advantage_factor * stab_factor * random.uniform(0.85, 1.00))
+    return int(
+        parentheses_damage * advantage_factor * stab_factor * random.uniform(0.85, 1.00)
+    )
+
 
 # Testing the functions
 
@@ -166,5 +181,3 @@ couting = Counter(log)
 print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
 
 print(f"Least commun amout of damage: {couting.most_common()[-1]}")
-
-    
