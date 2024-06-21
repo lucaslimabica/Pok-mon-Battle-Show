@@ -49,7 +49,7 @@ class Pokémon:
 
     @property
     def nickname(self):
-        return self.__nickname
+        return self.__nickname if self.__nickname else self.__specie
 
     @nickname.setter
     def nickname(self, value):
@@ -116,15 +116,16 @@ pokemon_dict = {
     "Eevee": {"species": "Eevee", "type1": "Normal", "type2": None, "nickname": "Eevee"}
 }
 
-pokes = []
-
-for pokemon_name, pokemon_data in pokemon_dict.items():
-    specie = pokemon_data["species"]
-    type1 = pokemon_data["type1"]
-    type2 = pokemon_data["type2"]
-    nickname = pokemon_data.get("nickname")
-    p = Pokémon(specie, type1, type2, nickname)
-    pokes.append(p)
-    
-print("\nPokémon Information:")
-print("\n---------------------------\n".join([p.pokemon_info() for p in pokes]))
+#pokes = []
+#
+#for pokemon_name, pokemon_data in pokemon_dict.items():
+#    specie = pokemon_data["species"]
+#    type1 = pokemon_data["type1"]
+#    type2 = pokemon_data["type2"]
+#    nickname = pokemon_data.get("nickname")
+#    p = Pokémon(specie, type1, type2, nickname)
+#    pokes.append(p)
+#    
+#print("\nPokémon Information:")
+#print("\n---------------------------\n".join([p.pokemon_info() for p in pokes]))
+#

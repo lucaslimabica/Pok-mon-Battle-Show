@@ -108,6 +108,9 @@ def calculateAdvantage(attackType: str, foeTypes: List[str]) -> float:
         "rock": ["fire", "ice", "flying", "bug"],
         "normal": [],
     }
+    for i, type in enumerate(foeTypes):
+        foeTypes[i] = type.lower() if type is not None else None
+
     if len(foeTypes) == 1:
         return 2 if foeTypes[0] in type_advantages.get(attackType, []) else 1
     for type in foeTypes:
@@ -151,29 +154,30 @@ def calculateDamage(
 
 # Testing the functions
 
-print("Charizard X Venusaur!")
-log = []
-for i in range(100):
-    x = calculateDamage(50, 95, 100, 85, "fire", ["fire", "flying"], ["grass", "poison"])
-    log.append(x)
-
-
-print(f"Average damage: {sum(log) / len(log)}")
-print(f"Minimum damage: {min(log)}")
-print(f"Maximum damage: {max(log)}")
-couting = Counter(log)
-print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
-print(f"Least commun amout of damage: {couting.most_common()[-1]}")
-
-print("\nSquirtle X Wartortle!")
-log = []
-for i in range(100):
-    x = calculateDamage(50, 90, 85, 100, "water", ["water"], ["water"])
-    log.append(x)
-
-print(f"Average damage: {sum(log) / len(log)}")
-print(f"Minimum damage: {min(log)}")
-print(f"Maximum damage: {max(log)}")
-couting = Counter(log)
-print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
-print(f"Least commun amout of damage: {couting.most_common()[-1]}")
+#print("Charizard X Venusaur!")
+#log = []
+#for i in range(100):
+#    x = calculateDamage(50, 95, 100, 85, "fire", ["fire", "flying"], ["grass", "poison"])
+#    log.append(x)
+#
+#
+#print(f"Average damage: {sum(log) / len(log)}")
+#print(f"Minimum damage: {min(log)}")
+#print(f"Maximum damage: {max(log)}")
+#couting = Counter(log)
+#print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
+#print(f"Least commun amout of damage: {couting.most_common()[-1]}")
+#
+#print("\nSquirtle X Wartortle!")
+#log = []
+#for i in range(100):
+#    x = calculateDamage(50, 90, 85, 100, "water", ["water"], ["water"])
+#    log.append(x)
+#
+#print(f"Average damage: {sum(log) / len(log)}")
+#print(f"Minimum damage: {min(log)}")
+#print(f"Maximum damage: {max(log)}")
+#couting = Counter(log)
+#print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
+#print(f"Least commun amout of damage: {couting.most_common()[-1]}")
+#
