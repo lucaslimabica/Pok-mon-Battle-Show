@@ -83,6 +83,9 @@ class Pokémon:
     def stats(self, value):
         self.__stats = value
 
+    def types(self) -> List[str]:
+        return [self.type1, self.type2] if self.type2 else [self.type1]
+
     def get_xp(self, amount: int):
         self.xp += amount
         if self.xp >= self.level * 100:
@@ -122,5 +125,6 @@ for pokemon_name, pokemon_data in pokemon_dict.items():
     nickname = pokemon_data.get("nickname")
     p = Pokémon(specie, type1, type2, nickname)
     pokes.append(p)
+    
 print("\nPokémon Information:")
 print("\n---------------------------\n".join([p.pokemon_info() for p in pokes]))
