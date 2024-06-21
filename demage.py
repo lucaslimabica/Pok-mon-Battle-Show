@@ -1,6 +1,7 @@
 # Damage Calculator Gen I
 import random
 from collections import Counter
+from typing import List
 
 
 def isCritical():
@@ -51,15 +52,18 @@ def calculateParentheses(level: int, power: int, attack: int, defense: int) -> i
     return int((level_value * damage) / 50 + 2)
 
 
-def isSTAB(attackType: str, pokemonType: str):
+def isSTAB(attackType: str, pokemonType: List[str]):
     """
     Returns 1.5 if the attack type is STAB (Strong Type Attack Bonus),
     and 1 otherwise.
     """
-    return 1.5 if attackType == pokemonType else 1
+    for type in pokemonType:
+        if attackType == type:
+            return 1.5
+    return 1
 
 
-def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> float:
+def calculateAdvantage(attackType: str, foeTypes: List[str]) -> float:
     """
     Returns the advantage factor based on the given attack type,
     and the types of the foe Pokémon.
@@ -75,13 +79,13 @@ def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> 
     float: The advantage factor.
 
     Examples:
-    >>> calculateAdvantage("fire", "grass")
+    >>> calculateAdvantage("fire", ["grass"])
     2
-    >>> calculateAdvantage("fire", "grass", "bug")
+    >>> calculateAdvantage("fire", ["grass", "bug"])
     4
-    >>> calculateAdvantage("water", "fire")
+    >>> calculateAdvantage("water", ["fire"])
     2
-    >>> calculateAdvantage("water", "fire", "rock")
+    >>> calculateAdvantage("water", ["fire", "rock"])
     4
     """
     type_advantages = {
@@ -104,16 +108,15 @@ def calculateAdvantage(attackType: str, foeType1: str, foeType2: str = None) -> 
         "rock": ["fire", "ice", "flying", "bug"],
         "normal": [],
     }
-
-    if foeType2 is None:
-        return 2 if foeType1 in type_advantages.get(attackType, []) else 1
-    else:
-        multiplier = 1
-        if foeType1 in type_advantages.get(attackType, []):
-            multiplier *= 2
-        if foeType2 in type_advantages.get(attackType, []):
-            multiplier *= 2
-        return multiplier
+    if len(foeTypes) == 1:
+        return 2 if foeTypes[0] in type_advantages.get(attackType, []) else 1
+    for type in foeTypes:
+        if foeTypes[0] in type_advantages.get(attackType, []) and foeTypes[1] not in type_advantages.get(attackType, []):
+            return 2
+        elif foeTypes[0] not in type_advantages.get(attackType, []) and foeTypes[1] in type_advantages.get(attackType, []):
+            return 2
+        elif foeTypes[0] in type_advantages.get(attackType, []) and foeTypes[1] in type_advantages.get(attackType, []):
+            return 4
 
 
 def calculateDamage(
@@ -122,9 +125,8 @@ def calculateDamage(
     attack: int,
     defense: int,
     attackType: str,
-    pokemonType: str,
-    foeType1: str,
-    foeType2: str = None,
+    pokemonType: List[str],
+    foeType: List[str]
 ):
     """
     Returns the damage done by the attacker based on the given level, power, attack, defense,
@@ -135,12 +137,12 @@ def calculateDamage(
     power (int): The power of the attack.
     attack (int): The attack value of the attacker Pokémon.
     defense (int): The defense value of the defender Pokémon.
-    attackType (str): The type of the attack.
+    attackType List(str): The type of the attack.
     foeType1 (str): The primary type of the foe Pokémon.
     foeType2 (str, optional): The secondary type of the foe Pokémon. Defaults to None.
     """
     parentheses_damage = calculateParentheses(level, power, attack, defense)
-    advantage_factor = calculateAdvantage(attackType, foeType1, foeType2)
+    advantage_factor = calculateAdvantage(attackType, foeType)
     stab_factor = isSTAB(attackType, pokemonType)
     return int(
         parentheses_damage * advantage_factor * stab_factor * random.uniform(0.85, 1.00)
@@ -152,8 +154,9 @@ def calculateDamage(
 print("Charizard X Venusaur!")
 log = []
 for i in range(100):
-    x = calculateDamage(50, 95, 100, 85, "fire", "fire", "grass")
+    x = calculateDamage(50, 95, 100, 85, "fire", ["fire", "flying"], ["grass", "poison"])
     log.append(x)
+
 
 print(f"Average damage: {sum(log) / len(log)}")
 print(f"Minimum damage: {min(log)}")
@@ -163,11 +166,9 @@ print(f"Most commun amout of damage: {couting.most_common(1)[0]}")
 print(f"Least commun amout of damage: {couting.most_common()[-1]}")
 
 print("\nSquirtle X Wartortle!")
-
 log = []
-
 for i in range(100):
-    x = calculateDamage(50, 90, 85, 100, "water", "water", "water")
+    x = calculateDamage(50, 90, 85, 100, "water", ["water"], ["water"])
     log.append(x)
 
 print(f"Average damage: {sum(log) / len(log)}")
