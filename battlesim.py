@@ -11,8 +11,15 @@ class Battle:
         self.current_pokemon = self.p1
         self.current_round = 1
 
-    def switch_pokemon(self, new_pokemon: pokemon.Pokémon):
-        pass
+        print(f"A wild {self.p2.nickname} appeared!")
+        print(f"{self.p1.nickname} vs. {self.p2.nickname}")
+        print("-=" * 12)
+
+    def switch_pokemon(self):
+        if self.current_pokemon == self.p1:
+            self.current_pokemon = self.p2
+        else:
+            self.current_pokemon = self.p1
 
     def knockout(self):
         hp = self.p2.stats[0]
@@ -22,8 +29,15 @@ class Battle:
             return False
 
     def round(self, moveType: str, power: int, moveName: str, moveAccuracy: float):
-        foeType1 = self.p2.type1
-        foeType2 = self.p2.type2
+        print(f"------ Round {self.current_round} ------")
+        
+        if self.current_pokemon == self.p1:
+            self.foe = self.p2
+        else:
+            self.foe = self.p1
+        
+        foeType1 = self.foe.type1
+        foeType2 = self.foe.type2
 
         stab = demage.isSTAB(moveType, self.current_pokemon.types())
         advantage = demage.calculateAdvantage(moveType, [foeType1, foeType2])
@@ -44,20 +58,21 @@ class Battle:
             print(f"{self.current_pokemon.nickname} used {moveName}!")
             print("It's a STAB move!") if stab != 1 else None
             print("Super Effective!") if advantage != 1 and advantage is not None else None
-            print(f"{self.p2.nickname} took {damage} damage!")
-            self.p2.stats[0] -= damage
+            print(f"{self.foe.nickname} took {damage} damage!")
+            self.foe.stats[0] -= damage
         else:
             print(f'{self.current_pokemon.nickname} used {moveName}, but it missed!')
         
         if self.knockout():
-            print(f"{self.p2.nickname} fainted!")
+            print(f"{self.foe.nickname} fainted!")
         
         self.current_round += 1
+        self.switch_pokemon()
 
 
 
-p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 49, 49, 45, 65,])
-p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", "Char")
+p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 49, 49, 45, 65,], level=9)
+p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[49, 49, 39, 41, 79,], level=9)
 battle = Battle(p1, p2)
-for i in range(10):
+for i in range(4):
     battle.round("water", 60, "Bubbles", 90)
