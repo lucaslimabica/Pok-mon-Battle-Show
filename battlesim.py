@@ -57,7 +57,10 @@ class Battle:
             # Description of the move
             print(f"{self.current_pokemon.nickname} used {moveName}!")
             print("It's a STAB move!") if stab != 1 else None
-            print("Super Effective!") if advantage != 1 and advantage is not None else None
+            if advantage > 1:
+                print("Super Effective!")
+            elif advantage < 1 and advantage > 0:
+                print("Not very Effective!")
             print(f"{self.foe.nickname} took {damage} damage!")
             self.foe.stats[0] -= damage
         else:
@@ -98,5 +101,5 @@ class Battle:
 p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 67, 49, 45, 65,], level=1)
 p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[1, 49, 39, 41, 79,], level=15)
 battle = Battle(p1, p2)
-battle.round("water", 60, "Bubbles", 90)
+battle.round("fire", 60, "Flamethrower", 90)
 print(p1.pokemon_info())

@@ -102,13 +102,13 @@ class Pokémon:
 
     def level_up(self):
         self.level += 1
+        print(f"{self.nickname or self.specie} leveled up to Lv.{self.level}!")
         for i in range(len(self.stats)):
             self.stats[i] += random.randint(1, 3)  # Randomly increase each stat by 1-3
             if self.stats[i] > 100:
                 self.stats[i] = 100  # Cap at 100 for each stat
 
             print(f"Your {self.nickname or self.specie}'s {self.stats_names[i]} increased!")
-        print(f"{self.nickname or self.specie} leveled up to Lv.{self.level}!")
 
     def __str__(self):
         return f"{self.nickname or self.specie} Lv.{self.level} ({self.type1}/{self.type2})"

@@ -108,18 +108,40 @@ def calculateAdvantage(attackType: str, foeTypes: List[str]) -> float:
         "rock": ["fire", "ice", "flying", "bug"],
         "normal": [],
     }
+    type_resistances = {
+        "fire": ["fire", "grass", "ice", "bug", "steel", "fairy"],
+        "water": ["fire", "water", "ice", "steel"],
+        "grass": ["water", "grass", "electric", "ground"],
+        "bug": ["grass", "fighting", "ground"],
+        "ice": ["ice"],
+        "dragon": ["fire", "water", "electric", "grass"],
+        "ghost": ["poison", "bug"],
+        "psychic": ["fighting", "psychic"],
+        "fighting": ["bug", "rock", "dark"],
+        "dark": ["ghost", "dark"],
+        "steel": ["normal", "grass", "ice", "flying", "psychic", "bug", "rock", "dragon", "steel", "fairy"],
+        "fairy": ["fighting", "bug", "dark"],
+        "electric": ["electric", "flying", "steel"],
+        "poison": ["grass", "fighting", "poison", "bug", "fairy"],
+        "ground": ["poison", "rock"],
+        "flying": ["grass", "fighting", "bug"],
+        "rock": ["normal", "fire", "poison", "flying"],
+        "normal": [],
+    }
     for i, type in enumerate(foeTypes):
         foeTypes[i] = type.lower() if type is not None else None
 
-    if len(foeTypes) == 1:
-        return 2 if foeTypes[0] in type_advantages.get(attackType, []) else 1
+    advantage_factor = 1
+
     for type in foeTypes:
-        if foeTypes[0] in type_advantages.get(attackType, []) and foeTypes[1] not in type_advantages.get(attackType, []):
-            return 2
-        elif foeTypes[0] not in type_advantages.get(attackType, []) and foeTypes[1] in type_advantages.get(attackType, []):
-            return 2
-        elif foeTypes[0] in type_advantages.get(attackType, []) and foeTypes[1] in type_advantages.get(attackType, []):
-            return 4
+        if type in type_advantages.get(attackType, []):
+            advantage_factor *= 2
+        elif type in type_resistances.get(attackType, []):
+            advantage_factor *= 0.5
+        else:
+            advantage_factor *= 1
+
+    return advantage_factor
 
 
 def calculateDamage(
