@@ -104,9 +104,12 @@ class Battle:
         return int(exp)
 
 
+moves = [{"moveName": "Tackle", "power": 40, "moveType":  "Normal", "moveAccuracy": 100},
+         {"moveName": "Ember", "power": 40, "moveType": "fire", "moveAccuracy": 100},
+         {"moveName": "Flamethrower", "power": 60, "moveType": "fire","moveAccuracy": 90}]
 
 p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 67, 49, 45, 65,], level=1)
 p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[1, 49, 39, 41, 79,], level=15)
 battle = Battle(p1, p2)
-battle.round(move={"moveName": "Flamethrower", "power": 60, "moveType": "fire","moveAccuracy": 90})
+battle.round(move=random.choice(moves))
 print(p1.pokemon_info())
