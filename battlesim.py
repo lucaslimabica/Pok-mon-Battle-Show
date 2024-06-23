@@ -28,7 +28,14 @@ class Battle:
         else:
             return False
 
-    def round(self, moveType: str, power: int, moveName: str, moveAccuracy: float):
+    def round(self, move: dict):
+        try:
+            moveType = move['moveType']
+            power = move['power']
+            moveName = move['moveName']
+            moveAccuracy = move['moveAccuracy']
+        except KeyError:
+            raise ValueError("Move must contain moveType, power, moveName, and moveAccuracy.")
         print(f"------ Round {self.current_round} ------")
         
         if self.current_pokemon == self.p1:
@@ -69,13 +76,13 @@ class Battle:
         if self.knockout():
             print(f"{self.foe.nickname} fainted!")
             self.current_pokemon.get_xp(amount=self.gain_exp())
-            #self.batlle_end()
+            self.batlle_end()
         
         self.current_round += 1
         self.switch_pokemon()
 
     def batlle_end(self):
-        pass
+        return True
 
     def gain_exp(self) -> int:
         """
@@ -101,5 +108,5 @@ class Battle:
 p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 67, 49, 45, 65,], level=1)
 p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[1, 49, 39, 41, 79,], level=15)
 battle = Battle(p1, p2)
-battle.round("fire", 60, "Flamethrower", 90)
+battle.round(move={"moveName": "Flamethrower", "power": 60, "moveType": "fire","moveAccuracy": 90})
 print(p1.pokemon_info())
