@@ -65,14 +65,38 @@ class Battle:
         
         if self.knockout():
             print(f"{self.foe.nickname} fainted!")
+            self.current_pokemon.get_xp(amount=self.gain_exp())
+            #self.batlle_end()
         
         self.current_round += 1
         self.switch_pokemon()
 
+    def batlle_end(self):
+        pass
+
+    def gain_exp(self) -> int:
+        """
+        EXP = (a X b X L X s) / (7 X p X t)
+        a = Base experience value for each specie
+        b = Level of the fainted Pokémon
+        L = Level of the current Pokémon
+        s = Number of the Pokém that participated in the battle and still alive
+        p = Number of Pokémon in the party
+        t = Multiplier, 1 for normal Pokémon and 1.5 for traded Pokémon  
+        """
+        a = 64
+        b = self.foe.level
+        lv = self.current_pokemon.level
+        s = 1
+        p = 1
+        t = 1
+        exp = (a * b * lv * s) / (7 * p * t)
+        return int(exp)
 
 
-p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 49, 49, 45, 65,], level=9)
-p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[49, 49, 39, 41, 79,], level=9)
+
+p1 = pokemon.Pokémon("Bulbasaur", "Grass", "Poison", stats=[45, 67, 49, 45, 65,], level=1)
+p2 = pokemon.Pokémon("Charmander", "Fire", "Rock", nickname="Flame", stats=[1, 49, 39, 41, 79,], level=15)
 battle = Battle(p1, p2)
-for i in range(4):
-    battle.round("water", 60, "Bubbles", 90)
+battle.round("water", 60, "Bubbles", 90)
+print(p1.pokemon_info())

@@ -1,5 +1,6 @@
 # Instantiate the Pokémon Classes
 from typing import List
+import random
 
 
 class Pokémon:
@@ -16,6 +17,7 @@ class Pokémon:
         self.__level = level
         self.__xp = 0
         self.__stats = stats
+        self.stats_names = ["HP", "Attack", "Defense", "Special", "Speed"]
 
     @property
     def specie(self):
@@ -83,17 +85,29 @@ class Pokémon:
     def stats(self, value):
         self.__stats = value
 
+    @property
+    def stats_name(self):
+        return self.stats_names
+
     def types(self) -> List[str]:
         return [self.type1, self.type2] if self.type2 else [self.type1]
 
     def get_xp(self, amount: int):
+        print(f"{self.nickname or self.specie} gained {amount} XP!")
         self.xp += amount
-        if self.xp >= self.level * 100:
+        while self.xp >= self.level * 100:
             self.level_up()
-            self.xp -= self.level * 100
+            self.xp -= (self.level - 1) * 100
+            
 
     def level_up(self):
         self.level += 1
+        for i in range(len(self.stats)):
+            self.stats[i] += random.randint(1, 3)  # Randomly increase each stat by 1-3
+            if self.stats[i] > 100:
+                self.stats[i] = 100  # Cap at 100 for each stat
+
+            print(f"Your {self.nickname or self.specie}'s {self.stats_names[i]} increased!")
         print(f"{self.nickname or self.specie} leveled up to Lv.{self.level}!")
 
     def __str__(self):
